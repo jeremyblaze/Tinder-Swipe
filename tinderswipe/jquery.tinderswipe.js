@@ -4,11 +4,13 @@ $.fn.tinderswipe = function(options){
     var elem = $(this);
     $(elem).addClass('tinderswipe_container');
 
-    var settings = $.extend({
+    var defaults = {
         endItemClass: 'end',
         afterYes: function() {},
         afterNo: function() {}
-    }, options );
+    };
+    
+    var options = $.extend(defaults, options);
     
     var elemCount = $(elem).children('li').length;
     
@@ -47,7 +49,7 @@ $.fn.tinderswipe = function(options){
     
     function tinderswipeYes() {
         var actv = $(elem).children('li.active');
-        if ( !$(actv).hasClass('yes') && !$(actv).hasClass('no') && !$(actv).hasClass(settings.endItemClass) ) {
+        if ( !$(actv).hasClass('yes') && !$(actv).hasClass('no') && !$(actv).hasClass(options.endItemClass) ) {
             var actvIndex = $(actv).index();
             var nextIndex =  actvIndex + 2;
             
@@ -56,13 +58,13 @@ $.fn.tinderswipe = function(options){
             $(elem).children('li:nth-child(' + nextIndex + ')').addClass('active');
             
             var actvId = $(actv).attr('id');
-            settings.afterYes.call(actvId);
+            options.afterYes(actvId);
         }
     }
     
     function tinderswipeNo() {
         var actv = $(elem).children('li.active');
-        if ( !$(actv).hasClass('yes') && !$(actv).hasClass('no') && !$(actv).hasClass(settings.endItemClass) ) {
+        if ( !$(actv).hasClass('yes') && !$(actv).hasClass('no') && !$(actv).hasClass(options.endItemClass) ) {
             var actvIndex = $(actv).index();
             var nextIndex =  actvIndex + 2;
             
@@ -71,7 +73,7 @@ $.fn.tinderswipe = function(options){
             $(elem).children('li:nth-child(' + nextIndex + ')').addClass('active');
             
             var actvId = $(actv).attr('id');
-            settings.afterNo.call(actvId);
+            options.afterNo(actvId);
         }
     }
 
